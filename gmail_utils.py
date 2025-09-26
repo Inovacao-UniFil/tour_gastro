@@ -14,7 +14,8 @@ from email.message import EmailMessage
 from email.utils import make_msgid
 from email.charset import Charset
 import pytz
-
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.compose",
     "https://www.googleapis.com/auth/calendar.events.owned"
@@ -28,19 +29,19 @@ def send_email(subject, message, attachments, to):
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+    if os.path.exists(BASE_DIR /"token.json"):
+        creds = Credentials.from_authorized_user_file(BASE_DIR / "token.json", SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                "credentials.json", SCOPES
+                BASE_DIR / "credentials.json", SCOPES
             )
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open("token.json", "w") as token:
+        with open(BASE_DIR / "token.json", "w") as token:
             token.write(creds.to_json())
 
     try:
@@ -59,7 +60,7 @@ def send_email(subject, message, attachments, to):
         # Add Attachment# attachment
         # guessing the MIME type
         if attachments != None:
-            attachment_filename = "Unifil1.jpg"
+            attachment_filename = BASE_DIR / "Unifil1.jpg"
             type_subtype, _ = mimetypes.guess_type(attachment_filename)
             maintype, subtype = type_subtype.split("/")
             with open(attachment_filename, "rb") as fp:
@@ -84,7 +85,7 @@ def send_email(subject, message, attachments, to):
     
 def define_student_email(date,time,comprovante):
     
-    html = open("templates/student_email.html", encoding='utf-8').read()
+    html = open(BASE_DIR / "templates/student_email.html", encoding='utf-8').read()
     #print(html)
     html = date.join(html.split("-date-"))
     html = time.join(html.split("-time-"))
@@ -93,7 +94,7 @@ def define_student_email(date,time,comprovante):
 
 def define_teacher_email(date,time,name,email):
     
-    html = open("templates/teacher_email.html", encoding='utf-8').read()
+    html = open(BASE_DIR / "templates/teacher_email.html", encoding='utf-8').read()
     #print(html)
     html = date.join(html.split("-date-"))
     html = time.join(html.split("-time-"))
@@ -109,19 +110,19 @@ def create_calendar(date_time,invitee):
   # The file token.json stores the user's access and refresh tokens, and is
   # created automatically when the authorization flow completes for the first
   # time.
-  if os.path.exists("token.json"):
-    creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+  if os.path.exists(BASE_DIR / "token.json"):
+    creds = Credentials.from_authorized_user_file(BASE_DIR /"token.json", SCOPES)
   # If there are no (valid) credentials available, let the user log in.
   if not creds or not creds.valid:
     if creds and creds.expired and creds.refresh_token:
       creds.refresh(Request())
     else:
       flow = InstalledAppFlow.from_client_secrets_file(
-          "credentials.json", SCOPES
+          BASE_DIR / "credentials.json", SCOPES
       )
       creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
-    with open("token.json", "w") as token:
+    with open(BASE_DIR / "token.json", "w") as token:
       token.write(creds.to_json())
 
   try:

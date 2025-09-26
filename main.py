@@ -15,7 +15,7 @@ from gmail_utils import send_email, define_student_email, define_teacher_email, 
 
 load_dotenv()
 app = Flask(__name__)
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 time_table = {
     'segunda': ["08:00" , "12:00"],
@@ -308,7 +308,7 @@ def test_calendar():
     create_calendar(date_time,'rgalletto@unifil.br')
     return "ok"
         
-#@app.route('/test_rubeus')
+@app.route('/test_rubeus')
 def test_rubeus():
     return send_lead_rubeus("John Dude","test@test.com","43999999999")
 
