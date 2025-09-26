@@ -43,7 +43,7 @@ MAIL_PASSWORD = os.environ.get('MAIL_ PASSWORD')
 def get_valid_times(s_date):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute(f"SELECT * FROM gastro WHERE agendamento_date = {s_date.isoformat()};")
+    cur.execute(f"SELECT * FROM gastro WHERE agendamento_date = %s;", [s_date.isoformat()])
     all = cur.fetchall()
     weekday = s_date.weekday()
     weekday_time = time_table[list(time_table.keys())[weekday]]
@@ -156,7 +156,7 @@ def send_data():
     cur = conn.cursor()
     #Criar tabela se não existe
     cur.execute("CREATE TABLE IF NOT EXISTS unifilista.gastro (id serial PRIMARY KEY, nome text, email text, telefone text, agendamento_time timestamp, agendamento_date timestamp, codigo smallserial, horario timestamp);")    #Verificar se aluno é duplicado
-    cur.execute(f"SELECT * FROM gastro WHERE email = {email};")
+    cur.execute(f"SELECT * FROM gastro WHERE email = %s;", [email])
     get = cur.fetchone()
     if get:
         #Aluno duplicado
@@ -186,10 +186,10 @@ def send_data():
         #    }
         #Inserir dados Aluno
         cur.execute(f"INSERT INTO gastro (nome, email, telefone, agendamento_time, agendamento_date, horario) VALUES" + 
-                    f"({nome},{email},{telefone},{agendamento_time.isoformat()},{agendamento_date.isoformat()}, CURRENT_TIMESTAMP);")
+                    f"(%s,%s,%s,%s,%s, CURRENT_TIMESTAMP);",[nome,email,telefone,agendamento_time.isoformat(),agendamento_date.isoformat()])
         conn.commit()
         #Receber Codigo de confirmacao conexao
-        cur.execute(f"SELECT * FROM gastro WHERE email = {email};")
+        cur.execute(f"SELECT * FROM gastro WHERE email = %s;", [email])
         get = cur.fetchone()
         codigo = get[6]
         agendamento_date = get[5]
@@ -264,11 +264,11 @@ def consult():
     if(data.get("comprovante")):
         comprovante = data.get("comprovante")
         codigo = int(comprovante[4:])
-        cur.execute(f"SELECT * FROM gastro WHERE codigo = {codigo};")
+        cur.execute(f"SELECT * FROM gastro WHERE codigo = %s;", [codigo])
     else:
         email = encrypt(data.get("email").lower())
         telefone = encrypt(data.get("telefone"))  
-        cur.execute(f"SELECT * FROM gastro WHERE email = {email} AND telefone = {telefone};")
+        cur.execute(f"SELECT * FROM gastro WHERE email = %s AND telefone = %s;", [email, telefone])
     get = cur.fetchone()
     if get:
         #Aluno duplicado
