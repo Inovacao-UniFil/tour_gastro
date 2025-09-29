@@ -220,7 +220,7 @@ def send_data():
             }
 
 #Popula o Excel de usuarios que se inscreveram
-@app.route("/getdata")
+#@app.route("/getdata")
 def getdata():
     comp = request.args.get("comprovante") 
     print(comp)
@@ -255,7 +255,6 @@ def getdata():
 
 @app.route('/consult', methods=["POST"])
 def consult():
-    
     #Conectar Banco
     print("Conectar")
     conn = get_db_connection()
@@ -297,19 +296,19 @@ def consult():
     get = cur.fetchone()
 
 
-@app.route('/test_email')
+#@app.route('/test_email')
 def test_email():
     message = define_teacher_email("22/02/2022","22:22","Teste","Teste@teste.teste")
     send_email("Tour Gastronomia: Agendamento",message,None,"rotaloco30@gmail.com")
     return "ok"
 
-@app.route('/test_calendar')
+#@app.route('/test_calendar')
 def test_calendar():
     date_time = datetime(2025,9,25,16,30).isoformat()
     create_calendar(date_time,'rgalletto@unifil.br')
     return "ok"
         
-@app.route('/test_rubeus')
+#@app.route('/test_rubeus')
 def test_rubeus():
     return send_lead_rubeus("John Dude","test@test.com","43999999999")
 
