@@ -7,3 +7,5 @@ vercel.json
 /enferma_env
 .vscode
 *.kra
+./token.json
+./credentials.json
