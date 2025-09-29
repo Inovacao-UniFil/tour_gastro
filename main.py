@@ -74,13 +74,13 @@ def encrypt(value):
         encrypted_value+=char
         key_index+=1
         if key_index >= len(key): key_index=0
-    return encrypted_value.encode('utf8','surrogateescape')
+    return encrypted_value.encode('utf8','surrogateescape').decode('utf8','surrogateescape')
 
 #Desencriptar dados usando uma chave do ambiente
 def decrypt(value):
     encrypted_value = ""
     key_index = 0
-    value = value.decode('utf8','surrogateescape')
+    value = value
     key = os.environ.get('ENCRYPT_KEY')
     for value_index in range(len(value)):
         char_value = (ord(value[value_index]) - ord(key[key_index]))
