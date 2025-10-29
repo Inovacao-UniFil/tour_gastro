@@ -139,7 +139,7 @@ def consultar():
 @app.route("/send_data", methods=["POST"])
 def send_data():
     data = request.json
-    email = encrypt(data.get("email").lower())
+    email = (data.get("email").lower())
     nome = encrypt(data.get("nome"))
     telefone = encrypt(data.get("telefone"))
     agendamento_date = data.get("date")
@@ -237,7 +237,7 @@ def getdata():
     for get in all:
         id = get[0]
         name = decrypt(get[1])
-        email = decrypt(get[2])
+        email = (get[2])
         telefone = decrypt(get[3])
         time = get[4].strftime("%H:%M")
         date = get[5].strftime("%d/%m/%y")
@@ -266,7 +266,7 @@ def consult():
         codigo = int(comprovante[4:])
         cur.execute(f"SELECT * FROM gastro WHERE codigo = %s;", [codigo])
     else:
-        email = encrypt(data.get("email").lower())
+        email = (data.get("email").lower())
         telefone = encrypt(data.get("telefone"))  
         cur.execute(f"SELECT * FROM gastro WHERE email = %s AND telefone = %s;", [email, telefone])
     get = cur.fetchone()
