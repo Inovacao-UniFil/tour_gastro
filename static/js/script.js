@@ -129,7 +129,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //let telefoneField = document.getElementById("telefoneField");
     let submitButton = document.getElementById("submitButton");
     
-    
+    if(date.min < "2026-01-16"){
+        date.min = "2026-01-16";
+    }
 
     telefone.addEventListener("input", function () {
         telefone.value = aplicarMascaraTelefone(telefone.value);
@@ -249,10 +251,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         // Redireciona para a página de sucesso
     });
-
-    comprovante.addEventListener("change", function(){
-        validateFormConsulta()
-    })
 
     document.getElementById("consultForm").addEventListener("submit", function (event) {
         if (!validateForm()) {
