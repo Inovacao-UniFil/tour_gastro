@@ -116,7 +116,7 @@ def main():
     #Encerrar conexao
     cur.close()
     conn.close()
-    start_date = datetime(year=2026,month=6,day=23)
+    start_date = datetime.today() + timedelta(days=1)
     end_date = datetime(year=2026,month=7,day=17)
     scheduling = {}
     for day in time_table.keys():
